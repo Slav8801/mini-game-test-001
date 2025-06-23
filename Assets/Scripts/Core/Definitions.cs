@@ -9,6 +9,11 @@ namespace Core
 			public const string DEFAULT = "SaveGame";
 		}
 
+		public static class Score
+		{
+			public const int POINTS_PER_MATCH = 10;
+		}
+
 		public static class Difficulty
 		{
 			public const int MAXIMUM_DIFFICULTY = 4;
