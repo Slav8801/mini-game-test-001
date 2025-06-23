@@ -41,6 +41,7 @@ namespace Core
 			{
 				var sceneRoot = currentState.GetRootGameObjects()[0];
 				var controller = sceneRoot.GetComponent<GameplayState>();
+				controller.OnStageComplete += EnterStageCompleteState;
 			}));
 		}
 

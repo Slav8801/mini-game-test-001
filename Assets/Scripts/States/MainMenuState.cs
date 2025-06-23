@@ -20,6 +20,8 @@ namespace States
 
 		private void Start()
 		{
+			PersistenceSystem.Instance.CurrentGame.TotalMatches = 0;
+
 			radioButtons.OnIndexChanged += HandleOnDifficultyChanged;
 			var index = PersistenceSystem.Instance.CurrentGame.DifficultyIndex;
 			radioButtons.SetCurrentIndex(index);
