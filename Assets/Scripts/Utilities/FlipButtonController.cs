@@ -21,6 +21,7 @@ namespace Utilities
 		public event Action OnFlip;
 
 		private bool isHidden;
+		private bool isShowingDownSide;
 		private Coroutine flipSequenceCoroutine = null;
 		private ImageIdPair imageIdPair = null;
 
@@ -35,6 +36,7 @@ namespace Utilities
 
 		public int GetId() => imageIdPair?.ID ?? 0;
 		public bool GetIsHidden() => isHidden;
+		public bool GetIsShowingDownSide() => isShowingDownSide;
 
 		public void HideFlipTile()
 		{
@@ -68,9 +70,14 @@ namespace Utilities
 
 		private IEnumerator FlipSequence()
 		{
+			flipButton.interactable = false;
+			isShowingDownSide = true;
 			ShowDownSide();
 			yield return new WaitForSeconds(secondsToStayOpen);
 			ShowUpSide();
+			yield return null;
+			isShowingDownSide = false;
+			flipButton.interactable = true;
 		}
 	}
 }

@@ -11,6 +11,8 @@ namespace Core
 
 		public static class Difficulty
 		{
+			public const int MAXIMUM_DIFFICULTY = 4;
+
 			public static readonly Vector2Int[] DIFFICULTY_MAP = new Vector2Int[]
 			{
 				new Vector2Int(2,2),

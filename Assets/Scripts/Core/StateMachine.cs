@@ -41,6 +41,7 @@ namespace Core
 			{
 				var sceneRoot = currentState.GetRootGameObjects()[0];
 				var controller = sceneRoot.GetComponent<GameplayState>();
+				controller.OnHomeButton += EnterMainMenuState;
 				controller.OnStageComplete += EnterStageCompleteState;
 			}));
 		}
@@ -52,6 +53,7 @@ namespace Core
 			{
 				var sceneRoot = currentState.GetRootGameObjects()[0];
 				var controller = sceneRoot.GetComponent<StageCompleteState>();
+				controller.OnContinueButton += EnterGameplayState;
 			}));
 		}
 

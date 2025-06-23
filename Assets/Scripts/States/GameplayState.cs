@@ -29,14 +29,13 @@ namespace States
 		[SerializeField]
 		private ImagesConfig imagesConfig;
 
-		private List<FlipButtonController> flipButtons;
-
-		private FlipButtonController previousFlippedButton;
-
 		public event Action OnHomeButton;
 		public event Action OnStageComplete;
 
+		private List<FlipButtonController> flipButtons;
+		private int previousFlippedButtonIndex = -1;
 		private int currentTurn = 0;
+		private int currentMatches = 0;
 
 		private void Start()
 		{
@@ -67,7 +66,7 @@ namespace States
 			UpdateTurnsLabel();
 		}
 
-		private void UpdateMatchesLabel() => matchesAmount.text = PersistenceSystem.Instance.CurrentGame.TotalMatches.ToString();
+		private void UpdateMatchesLabel() => matchesAmount.text = currentMatches.ToString();
 		private void UpdateTurnsLabel() => turnsAmount.text = currentTurn.ToString();
 
 		private void CreateFlipButtons(int amount)
@@ -125,25 +124,36 @@ namespace States
 
 		private void HandleOnFlipped(int index)
 		{
-			flippedTiles++;
-			var flippedButton = flipButtons[index];
+			Debug.Log(index + " | " + previousFlippedButtonIndex);
+			if (index == previousFlippedButtonIndex) return;
 
-			if (flippedTiles == 2)
+			flippedTiles++;
+			Debug.Log(flippedTiles);
+
+			if (previousFlippedButtonIndex >= 0)
 			{
-				if (previousFlippedButton.GetId() == flippedButton.GetId())
+				var flippedButton = flipButtons[index];
+				var previousFlippedButton = flipButtons[previousFlippedButtonIndex];
+				if (previousFlippedButton.GetId() == flippedButton.GetId() && previousFlippedButton.GetIsShowingDownSide())
 				{
 					previousFlippedButton.HideFlipTile();
 					flippedButton.HideFlipTile();
 
+					currentMatches++;
+					UpdateMatchesLabel();
+
 					TryToEndStage();
 				}
-
+			}
+			
+			if (flippedTiles == 2)
+			{
 				IncreaseTurns();
 				flippedTiles = 0;
-				return;
+				//return;
 			}
 
-			previousFlippedButton = flippedButton;
+			previousFlippedButtonIndex = index;
 		}
 
 		private void TryToEndStage()
@@ -158,8 +168,6 @@ namespace States
 
 		private void EndStage()
 		{
-			PersistenceSystem.Instance.CurrentGame.TotalMatches++;
-			PersistenceSystem.Instance.SaveGame();
 			OnStageComplete?.Invoke();
 		}
 	}
