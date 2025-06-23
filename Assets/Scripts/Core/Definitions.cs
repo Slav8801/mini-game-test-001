@@ -8,6 +8,7 @@ namespace Core
 			public const string MAIN_MENU_STATE = "MainMenu";
 			public const string GAMEPLAY_STATE = "Gameplay";
 			public const string STAGE_COMPLETE_STATE = "StageComplete";
+			public const string SETTINGS_STATE = "Settings";
 		}
 	}
 }
