@@ -32,6 +32,12 @@ namespace States
 		private FlipButtonController flipButtonTemplate;
 		[SerializeField]
 		private ImagesConfig imagesConfig;
+		[SerializeField]
+		private AudioSource flipAS;
+		[SerializeField]
+		private AudioSource matchAS;
+		[SerializeField]
+		private AudioSource mismatchAS;
 
 		public event Action OnHomeButton;
 		public event Action OnStageComplete;
@@ -128,19 +134,25 @@ namespace States
 			flipButtonsLayoutGroup.cellSize = new Vector2(minSize, minSize);
 		}
 
-		private int flippedTiles = 0;
-
 		private void HandleOnFlipped(int index)
 		{
-			Debug.Log(index + " | " + previousFlippedButtonIndex);
-			if (index == previousFlippedButtonIndex) return;
+			var flippedButton = flipButtons[index];
 
-			flippedTiles++;
-			Debug.Log(flippedTiles);
+			if (index == previousFlippedButtonIndex)
+			{
+				if (!flippedButton.GetIsShowingDownSide())
+				{
+					flipAS.Play();
+				}
+
+				return;
+			}
+			else flipAS.Play();
+
+			var isMatched = false;
 
 			if (previousFlippedButtonIndex >= 0)
 			{
-				var flippedButton = flipButtons[index];
 				var previousFlippedButton = flipButtons[previousFlippedButtonIndex];
 				if (previousFlippedButton.GetId() == flippedButton.GetId() && previousFlippedButton.GetIsShowingDownSide())
 				{
@@ -154,15 +166,19 @@ namespace States
 					UpdateScoreLabel();
 					UpdateTopScoreLabel();
 
+					matchAS.Play();
+
 					TryToEndStage();
 				}
 			}
-			
-			if (flippedTiles == 2)
+
+			var flippedButtons = NumberOfFlippedButtons();
+
+			if (flippedButtons >= 1)
 			{
+				if (!isMatched && AreThereFlippedButtons()) mismatchAS.Play();
+
 				IncreaseTurns();
-				flippedTiles = 0;
-				//return;
 			}
 
 			previousFlippedButtonIndex = index;
@@ -181,6 +197,25 @@ namespace States
 		private void EndStage()
 		{
 			OnStageComplete?.Invoke();
+		}
+
+		private bool AreThereFlippedButtons()
+		{
+			for (var index = 0; index < flipButtons.Count; index++)
+			{
+				if (flipButtons[index].GetIsShowingDownSide()) return true;
+			}
+			return false;
+		}
+
+		private int NumberOfFlippedButtons()
+		{
+			var amount = 0;
+			for (var index = 0; index < flipButtons.Count; index++)
+			{
+				if (flipButtons[index].GetIsShowingDownSide()) amount++;
+			}
+			return amount;
 		}
 	}
 }

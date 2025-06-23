@@ -42,6 +42,7 @@ namespace Utilities
 		{
 			if (flipSequenceCoroutine != null) StopCoroutine(flipSequenceCoroutine);
 
+			isShowingDownSide = false;
 			isHidden = true;
 			imagesRoot.SetActive(false);
 
