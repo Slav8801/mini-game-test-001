@@ -27,6 +27,8 @@ namespace Core
 			{
 				var sceneRoot = currentState.GetRootGameObjects()[0];
 				var controller = sceneRoot.GetComponent<MainMenuState>();
+				controller.OnPlayButton += EnterGameplayState;
+				controller.OnSettingsButton += EnterSettingsState;
 			}));
 		}
 
@@ -50,9 +52,20 @@ namespace Core
 			}));
 		}
 
+		private void EnterSettingsState()
+		{
+			var sceneToLoad = Definitions.StateNames.SETTINGS_STATE;
+			StartCoroutine(LoadSceneAsync(sceneToLoad, () =>
+			{
+				var sceneRoot = currentState.GetRootGameObjects()[0];
+				var controller = sceneRoot.GetComponent<SettingsState>();
+				controller.OnBackButton += EnterMainMenuState;
+			}));
+		}
+
 		private IEnumerator LoadSceneAsync(string sceneToLoad, Action onComplete = null)
 		{
-			if (currentState != null)
+			if (currentState.buildIndex >= 0)
 			{
 				SceneManager.SetActiveScene(SceneManager.GetSceneByName(Definitions.StateNames.MAIN_STATE));
 				SceneManager.UnloadSceneAsync(currentState);
