@@ -19,6 +19,10 @@ namespace States
 		[SerializeField]
 		private Text turnsAmount;
 		[SerializeField]
+		private Text scoreAmount;
+		[SerializeField]
+		private Text topScoreAmount;
+		[SerializeField]
 		private GridLayoutGroup flipButtonsLayoutGroup;
 		[SerializeField]
 		private RectTransform flipButtonsLayoutGroupRect;
@@ -45,6 +49,8 @@ namespace States
 
 			UpdateTurnsLabel();
 			UpdateMatchesLabel();
+			UpdateScoreLabel();
+			UpdateTopScoreLabel();
 
 			var difficultyLevel = PersistenceSystem.Instance.CurrentGame.DifficultyIndex;
 
@@ -68,6 +74,8 @@ namespace States
 
 		private void UpdateMatchesLabel() => matchesAmount.text = currentMatches.ToString();
 		private void UpdateTurnsLabel() => turnsAmount.text = currentTurn.ToString();
+		private void UpdateScoreLabel() => scoreAmount.text = PersistenceSystem.Instance.CurrentGame.CurrentScore.ToString();
+		private void UpdateTopScoreLabel() => topScoreAmount.text = PersistenceSystem.Instance.CurrentGame.TopScore.ToString();
 
 		private void CreateFlipButtons(int amount)
 		{
@@ -141,6 +149,10 @@ namespace States
 
 					currentMatches++;
 					UpdateMatchesLabel();
+
+					PersistenceSystem.Instance.CurrentGame.CurrentScore += Definitions.Score.POINTS_PER_MATCH;
+					UpdateScoreLabel();
+					UpdateTopScoreLabel();
 
 					TryToEndStage();
 				}
