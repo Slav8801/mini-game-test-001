@@ -2,6 +2,11 @@ namespace Core
 {
 	public static class Definitions
 	{
+		public static class SaveGame
+		{
+			public const string DEFAULT = "SaveGame";
+		}
+
 		public static class StateNames
 		{
 			public const string MAIN_STATE = "Main";
