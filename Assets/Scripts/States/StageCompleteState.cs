@@ -10,6 +10,8 @@ namespace States
 	{
 		[SerializeField]
 		private Button continueButton;
+		[SerializeField]
+		private AudioSource gameOverAS;
 
 		public event Action OnContinueButton;
 
@@ -17,6 +19,7 @@ namespace States
 		{
 			IncreaseDifficulty();
 			continueButton.onClick.AddListener(HandleOnContinueButtonClicked);
+			gameOverAS.Play();
 		}
 
 		private void HandleOnContinueButtonClicked()
