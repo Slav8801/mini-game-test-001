@@ -1,3 +1,4 @@
+using Persistence;
 using States;
 using System;
 using System.Collections;
@@ -13,6 +14,7 @@ namespace Core
 		private void Awake()
 		{
 			//initialize utilities
+			PersistenceSystem.Instance.CreateSaveGame();
 		}
 
 		private void Start()

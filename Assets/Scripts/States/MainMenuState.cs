@@ -1,3 +1,4 @@
+using Persistence;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,8 @@ namespace States
 		private void Start()
 		{
 			radioButtons.OnIndexChanged += HandleOnDifficultyChanged;
-			//set radio button to last saved index
+			var index = PersistenceSystem.Instance.CurrentGame.DifficultyIndex;
+			radioButtons.SetCurrentIndex(index);
 
 			playButton.onClick.AddListener(HandleOnPlayButtonClicked);
 			settingsButton.onClick.AddListener(HandleOnSettingsButtonClicked);
@@ -39,7 +41,8 @@ namespace States
 		private void HandleOnDifficultyChanged(int index)
 		{
 			var currentIndex = radioButtons.GetCurrentIndex();
-			//save radio button index
+			PersistenceSystem.Instance.CurrentGame.DifficultyIndex = currentIndex;
+			PersistenceSystem.Instance.SaveGame();
 		}
 	}
 }
