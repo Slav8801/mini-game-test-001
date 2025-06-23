@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Core
 {
 	public static class Definitions
@@ -5,6 +7,18 @@ namespace Core
 		public static class SaveGame
 		{
 			public const string DEFAULT = "SaveGame";
+		}
+
+		public static class Difficulty
+		{
+			public static readonly Vector2Int[] DIFFICULTY_MAP = new Vector2Int[]
+			{
+				new Vector2Int(2,2),
+				new Vector2Int(2,3),
+				new Vector2Int(3,4),
+				new Vector2Int(4,4),
+				new Vector2Int(5,4),
+			};
 		}
 
 		public static class StateNames
